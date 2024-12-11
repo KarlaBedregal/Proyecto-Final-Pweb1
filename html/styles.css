@@ -1,0 +1,127 @@
+/* General Styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #4facfe, #00f2fe, #a8ff78);
+    color: #ffffff;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Logo Styles */
+.logo-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.logo {
+    width: 150px; /* Ajusta el tamaño según lo necesites */
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.1);
+}
+
+/* Title Styles */
+h1 {
+    font-size: 4rem;
+    margin-bottom: 30px;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, color 0.3s ease;
+    cursor: pointer;
+}
+
+/* Título con efecto de movimiento al pasar el cursor */
+h1:hover {
+    transform: translateY(-10px);
+    color: #ffeb3b;
+}
+
+/* Button Styles */
+.button-container {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.button {
+    padding: 15px 40px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4facfe;
+    background: #ffffff;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+.button:hover {
+    transform: scale(1.1) rotate(5deg);
+    background: #00f2fe;
+    color: #ffffff;
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Footer Styles */
+footer {
+    margin-top: auto;
+    font-size: 1rem;
+    color: #e1f5fe;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    background-color: #00796b;
+    text-align: center;
+}
+
+footer a {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+footer a:hover {
+    background-color: #4facfe;
+}
+
+/* Back to Top Button */
+.back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #00f2fe;
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    font-size: 2rem;
+    padding: 15px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    display: none;
+}
+.logo {
+    width: 500px; 
+    height: auto; 
+}
+}
+
+.back-to-top:hover {
+    background-color: #35e2ce;
+}
+
+/* Mostrar botón de "volver arriba" cuando se hace scroll */
+body.scrolled .back-to-top {
+    display: block;
+}
