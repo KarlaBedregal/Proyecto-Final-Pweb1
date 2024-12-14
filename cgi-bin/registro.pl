@@ -1,58 +1,55 @@
 #!/usr/bin/perl
-use strict;
-use warnings;
 use CGI qw(:standard);
 use DBI;
-use Digest::SHA qw(sha256_hex);
+use utf8;  # Asegura que el código fuente esté en UTF-8
+binmode(STDOUT, ":utf8"); 
 
-# Conexión a la base de datos
-my $dbh = DBI->connect("DBI:mysql:usuarios_db", "user", "mi_password")
-    or die "No se pudo conectar a la base de datos: $DBI::errstr";
+# Configuración de conexión a la base de datos
+my $dsn = "DBI:mysql:database=mi_base_de_datos;host=localhost";
+my $usuario = "mi_usuario";
+my $contraseña = "mi_contraseña";
+my $dbh = DBI->connect($dsn, $usuario, $contraseña) or die "No se pudo conectar a la base de datos: $DBI::errstr";
 
-# Si el formulario fue enviado
-if (param('nombre') && param('apellidos') && param('nombre_usuario') && param('edad') && param('genero') && param('telefono') && param('correo') && param('contrasena') && param('contrasena_confirmacion')) {
+# Obtener datos del formulario
+my $username = param('username');
+my $email = param('email');
+my $password = param('password');
 
-    # Recuperar datos del formulario
-    my $nombre = param('nombre');
-    my $apellidos = param('apellidos');
-    my $nombre_usuario = param('nombre_usuario');
-    my $edad = param('edad');
-    my $genero = param('genero');
-    my $telefono = param('telefono');
-    my $correo = param('correo');
-    my $contrasena = param('contrasena');
-    my $contrasena_confirmacion = param('contrasena_confirmacion');
-
-    if ($contrasena ne $contrasena_confirmacion) {
-    print header(), start_html('Error'), h1('Las contraseñas no coinciden'), end_html;
+if (!$username || !$email || !$password) {
+    print "Content-type: text/html\n\n";
+    print header();
+    print "<h1>Error: Todos los campos son obligatorios.</h1>";
     exit;
-    }
-
-    use Digest::SHA qw(sha256_hex);
-    my $contrasena_hash = sha256_hex($contrasena);
-
-    # Insertar datos en la base de datos
-    my $sth = $dbh->prepare("INSERT INTO usuarios (nombre, apellidos, nombre_usuario, edad, genero, telefono, correo, contrasena) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
-    or die "No se pudo preparar la consulta: $DBI::errstr";
-    $sth->execute($nombre, $apellidos, $nombre_usuario, $edad, $genero, $telefono, $correo, $contrasena_hash)
-    or die "No se pudo ejecutar la consulta: $DBI::errstr";
-
-    # Respuesta de éxito
-    print header(), start_html('Registro Exitoso'), h1('¡Registro Exitoso!'),
-          p('Tu cuenta ha sido creada correctamente.'),
-          p('Puedes ir a la página de inicio de sesión.'),
-          end_html;
-} else {
-    # Si el formulario no ha sido enviado, mostrar el formulario HTML
-    print header(), start_html('Registro'),
-          h1('Formulario de Registro'),
-          start_form(-action => "/cgi-bin/registro.pl", -method => "POST"),
-          p('Nombre: '), textfield('nombre'),
-          p('Correo: '), textfield('correo'),
-          p('Contraseña: '), password_field('contrasena'),
-          p(submit('Registrar')),
-          end_form(), end_html;
 }
 
-# Cerrar la conexión
+# Consulta para verificar si ya existe el usuario o correo
+my $sth_check = $dbh->prepare("SELECT COUNT(*) FROM usuarios WHERE username = ? OR email = ?");
+$sth_check->execute($username, $email) or die "Error al verificar el usuario: $DBI::errstr";
+my ($exists) = $sth_check->fetchrow_array();
+
+if ($exists > 0) {
+    # Usuario ya registrado
+    print "Content-type: text/html\n\n";
+    print header();
+    print "<h1>Error: El usuario o correo ya está registrado.</h1>";
+    print "<p><a href='../iniciar_sesion.html'>Iniciar sesion</a></p>";
+} else {
+    # Encriptar la contraseña
+    use Digest::SHA qw(sha256_hex);
+    my $hashed_password = sha256_hex($password);
+
+    # Insertar un nuevo usuario
+    my $sth_insert = $dbh->prepare("INSERT INTO usuarios (username, email, password) VALUES (?, ?, ?)");
+    $sth_insert->execute($username, $email, $hashed_password) or die "No se pudo insertar el usuario: $DBI::errstr";
+    
+    # Respuesta al usuario
+    print "Content-type: text/html\n";
+    print "Location: ../iniciar_sesion.html\n\n";  # Cambia la URL según la ubicación de tu página de inicio de sesión
+    exit; 
+
+    $sth_insert->finish();
+}
+
+# Cerrar la conexión a la base de datos
+$sth_check->finish();
 $dbh->disconnect();
