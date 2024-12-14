@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Descargar Videos de YouTube</title>
+    <link rel="stylesheet" href="estilosdescargador.css">
+    <script>
+        function manejarCambioSeleccion() {
+            const selectElement = document.getElementById('select');
+            const nuevoDirectorio = document.getElementById('nuevo_directorio');
+
+            // Mostrar el campo de texto solo si la opción es "personalizado"
+            if (selectElement.value === 'personalizado') {
+                nuevoDirectorio.style.display = 'inline-block';
+            } else {
+                nuevoDirectorio.style.display = 'none';
+            }
+            actualizarDirectorio(selectElement.value);
+        }
+
+        // Función para realizar la solicitud AJAX
+        function actualizarDirectorio(directorioSeleccionado) {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', '/cgi-bin/descargador.pl?directorio=' + encodeURIComponent(directorioSeleccionado), true);
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    // Actualizar el texto del directorio seleccionado en la página
+                    document.getElementById('directorioSeleccionado').innerText = 'Directorio seleccionado: ' + xhr.responseText;
+                }
+            };
+
+            xhr.send();
+        }  
+        // Configurar el evento para cuando cambie el valor del <select>
+        document.addEventListener('DOMContentLoaded', () => {
+            const selectElement = document.getElementById('select');
+            selectElement.addEventListener('change', manejarCambioSeleccion);
+
+            // Ocultar el campo de texto inicialmente
+            document.getElementById('nuevo_directorio').style.display = 'none';
+        });
+    </script>
+</head>
+<body>
+    <a href="/descargas.html" id="mis_descargas">Mis Descargas</a>
+
+    <h2>DOWNLOADERBYTE</h2>
+    <form action="/cgi-bin/descargador.pl" method="GET">
+        <label for="select">Elije el nombre para tu lista:</label>
+        <select id="select" name="select">
+            <option value="favoritos" selected>Mis favoritos</option>
+            <option value="rock">Rock</option>
+            <option value="pop">Pop</option>
+            <option value="regueton">Reguetón</option>
+            <option value="folclorico">Folclórico</option>
+            <option value="personalizado">Personalizado</option>
+        </select>
+
+        <input type="text" id="nuevo_directorio" name="nuevo_directorio" placeholder="Ingresa el nombre de tu nueva playlist">
+        <br><br>
+
+        <!-- Mostrar el directorio seleccionado si está disponible -->
+        <p>Directorio seleccionado: <span id="directorio_seleccionado">Mis favoritos</span></p>
+
+        <!-- Botón para cambiar el directorio -->
+        <button type="button" id="cambiar_directorio" onclick="document.getElementById('nuevo_directorio').style.display='inline-block';">Cambiar lista</button>
+
+        <br><br>
+
+        <label for="url">URL del Video de YouTube:</label>
+        <input type="text" id="url" name="url" required><br><br>
+
+        <button type="submit" name="action" value="descargar_mp4">Descargar en MP4</button>
+        <button type="submit" name="action" value="descargar_mp3">Descargar en MP3</button>
+        <button type="submit" name="action" value="descargar_avi">Descargar en AVI</button>
+        <br><br>
+
+        <img src="images/png-transparent-video-camera-color-gradient-3d-icon-thumbnail.png" alt="imagen de sonido" style="width: 170px; height: 170px;">
+    </form>
+</body>
+</html>

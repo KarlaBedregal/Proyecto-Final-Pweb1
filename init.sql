@@ -11,9 +11,15 @@ USE mi_base_de_datos;
 -- Crear la tabla de usuarios
 CREATE TABLE IF NOT EXISTS usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(100) UNIQUE NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
+    nombre VARCHAR(50),
+    apellido VARCHAR(50),
+    fecha_nacimiento DATE,
+    usuario VARCHAR(100) UNIQUE NOT NULL,
+    correo VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL, 
+    edad INT CHECK (edad >= 5),  
+    genero VARCHAR(1) NOT NULL,   
+    telefono VARCHAR(9) NOT NULL, 
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -25,5 +31,6 @@ CREATE TABLE IF NOT EXISTS canciones (
     url VARCHAR(255) NOT NULL,
     formato VARCHAR(10) NOT NULL,
     fecha_descarga TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    tamano INT,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE ON UPDATE CASCADE
 );

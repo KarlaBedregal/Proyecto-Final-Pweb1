@@ -1,3 +1,4 @@
+/* Estilos generales del body */
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f0f8ff; /* Celeste suave */
@@ -11,54 +12,71 @@ body {
     box-sizing: border-box;
 }
 
+/* Título principal */
 h1 {
     color: #2a9d8f; /* Verde agua */
     text-align: center;
     font-size: 2rem;
     margin-bottom: 20px;
-    margin-top: -500px;
-    margin-left: 200px;
 }
 
+/* Formulario */
 form {
     background-color: #a7f3da;
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 400px;
+    max-width: 600px; /* Ancho máximo del formulario */
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: column; /* Los elementos están en columna */
+    gap: 20px; /* Espacio entre los campos */
 }
 
+/* Estilo de las etiquetas */
 label {
     font-size: 1rem;
     color: #0a776a;
-    margin-bottom: 5px;
     text-align: left;
     width: 100%;
+    margin-bottom: 5px;
 }
 
+/* Estilo de los campos de entrada */
 input[type="text"],
 input[type="email"],
-input[type="password"] {
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+select {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
+    padding: 12px;
+    margin-bottom: 10px;
     border: 1px solid #85ce32;
     border-radius: 5px;
     font-size: 1rem;
     transition: border-color 0.3s ease;
 }
 
+/* Disposición de los campos de nombre, apellido en línea */
+.input-group {
+    display: flex;
+    justify-content: space-between; /* Para distribuir los campos */
+    gap: 20px; /* Espacio entre los campos */
+}
+
+/* Estilo de los campos al hacer foco */
 input[type="text"]:focus,
 input[type="email"]:focus,
-input[type="password"]:focus {
+input[type="password"]:focus,
+input[type="number"]:focus,
+input[type="tel"]:focus,
+select:focus {
     border-color: #2a9d8f;
     outline: none;
 }
 
+/* Botón de submit */
 input[type="submit"] {
     background-color: #2a9d8f;
     color: #ffffff;
@@ -68,20 +86,14 @@ input[type="submit"] {
     font-size: 1.1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    width: 100%;
 }
 
 input[type="submit"]:hover {
     background-color: #1f7d6c; /* Verde agua más oscuro */
 }
 
-/* Estilos de texto de error */
-.error {
-    color: red;
-    font-size: 0.9rem;
-    margin-top: 10px;
-}
-
-/* Responsividad */
+/* Responsividad para dispositivos pequeños */
 @media (max-width: 600px) {
     form {
         padding: 20px;
@@ -90,5 +102,25 @@ input[type="submit"]:hover {
 
     h1 {
         font-size: 1.5rem;
+    }
+
+    /* En pantallas pequeñas, los campos ocupan todo el ancho */
+    .input-group {
+        flex-direction: column; /* Los campos estarán en columna en pantallas pequeñas */
+        gap: 10px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="email"],
+    input[type="password"],
+    input[type="tel"],
+    select {
+        width: 100%; /* Ocupan el 100% del ancho */
+    }
+
+    /* El botón de envío ocupa todo el ancho en pantallas pequeñas */
+    input[type="submit"] {
+        width: 100%;
     }
 }

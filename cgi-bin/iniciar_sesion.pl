@@ -12,21 +12,21 @@ my $contraseña = "mi_contraseña";
 my $dbh = DBI->connect($dsn, $usuario, $contraseña) or die "No se pudo conectar a la base de datos: $DBI::errstr";
 
 # Obtener datos del formulario
-my $username = param('username');
+my $username = param('usuario');
 my $password = param('password');
 
 # Encriptar la contraseña (usando SHA-256, por ejemplo)
 my $hashed_password = sha256_hex($password);
 
 # Consulta para verificar las credenciales del usuario
-my $sth = $dbh->prepare("SELECT * FROM usuarios WHERE username = ? AND password = ?");
+my $sth = $dbh->prepare("SELECT * FROM usuarios WHERE usuario = ? AND password = ?");
 $sth->execute($username, $hashed_password);
 
 # Verificar si hay un usuario con las credenciales proporcionadas
 if (my $row = $sth->fetchrow_hashref) {
     # Redirigir a la página principal
     print "Content-type: text/html\n";
-    print "Location: ../principal.html\n\n";  # Cambia la URL según la ubicación de tu página principal
+    print "Location: ../descargador.html\n\n";  # Cambia la URL según la ubicación de tu página principal
 } else {
     # Si no se encuentra el usuario o la contraseña es incorrecta
     print header();
