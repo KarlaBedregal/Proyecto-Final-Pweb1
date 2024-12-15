@@ -96,19 +96,17 @@ if ($is_ajax) {
         } else {
             print "<h2>Video descargado exitosamente en formato $extension.</h2>";
             my $filename = "$path/" . (glob "$path/*.$extension")[0]; 
+            my $metadata_json = `yt-dlp -j $url`;
 
-            # Extraer metadatos con ffmpeg
-            my $ffmpeg_command = "ffmpeg -i '$filename' 2>&1";
-            my $metadata = `$ffmpeg_command`;
+            use JSON;
+            my $metadata = decode_json($metadata_json);
 
-            # Extraer los datos específicos de los metadatos
-            my ($nombre_cancion) = ($metadata =~ /title\s*:\s*(.*)/i) ? $1 : 'Desconocido';
-            my ($artista) = ($metadata =~ /artist\s*:\s*(.*)/i) ? $1 : 'Desconocido';
-            my ($genero) = ($metadata =~ /genre\s*:\s*(.*)/i) ? $1 : 'Desconocido';
-            my $tamano = -s $filename;  # Tamaño del archivo en bytes
+            # Extraer los datos de la URL del video
+            my $nombre_cancion = $metadata->{title} || 'Desconocido';
+            my $directorio_guardado = $nuevo_directorio || $directorio;
 
-            my $insertardatosvideos = $dbh->prepare("INSERT INTO canciones (nombre_cancion, artista, url, formato, tamano, genero, directorio) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            $insertardatosvideos->execute($nombre_cancion, $artista, $url, $extension, $tamano, $genero, $path);
+            my $insertardatosvideos = $dbh->prepare("INSERT INTO canciones (nombre_cancion, url, formato, directorio) VALUES (?, ?, ?, ?)");
+            $insertardatosvideos->execute($nombre_cancion, $url, $extension, $directorio_guardado);
 
             print "<h2>Datos de la canción insertados exitosamente.</h2>";
         }
@@ -119,17 +117,14 @@ if ($is_ajax) {
         $sth->execute();
 
         print "<table border='1'>";
-        print "<tr><th>ID</th><th>Nombre Canción</th><th>Artista</th><th>URL</th><th>Formato</th><th>Tamaño</th><th>Género</th><th>Directorio</th><th>Fecha Descarga</th></tr>";
+        print "<tr><th>ID</th><th>Nombre Canción</th><th>URL</th><th>Formato</th><th>Directorio</th><th>Fecha Descarga</th></tr>";
         
         while (my $row = $sth->fetchrow_hashref) {
             print "<tr>";
             print "<td>" . $row->{id} . "</td>";
             print "<td>" . $row->{nombre_cancion} . "</td>";
-            print "<td>" . $row->{artista} . "</td>";
             print "<td>" . $row->{url} . "</td>";
             print "<td>" . $row->{formato} . "</td>";
-            print "<td>" . $row->{tamano} . "</td>";
-            print "<td>" . $row->{genero} . "</td>";
             print "<td>" . $row->{directorio} . "</td>";
             print "<td>" . $row->{fecha_descarga} . "</td>";
             print "</tr>";
