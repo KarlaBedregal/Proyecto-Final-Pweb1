@@ -5,9 +5,19 @@ use CGI qw(:standard);
 use File::Path qw(make_path);
 use File::Spec;
 use Encode;
-use utf8;
+use DBI;
+use File::Basename;
+use utf8;  # Asegura que el código fuente esté en UTF-8
+binmode(STDOUT, ":utf8"); 
 
 my $cgi = CGI->new;
+
+# Configuración de conexión a la base de datos
+my $dsn = "DBI:mysql:database=mi_base_de_datos;host=localhost";
+my $usuario = "mi_usuario";
+my $contraseña = "mi_contraseña";
+my $dbh = DBI->connect($dsn, $usuario, $contraseña) or die "No se pudo conectar a la base de datos: $DBI::errstr";
+
 
 print $cgi->header('text/html; charset=UTF-8');
 print $cgi->start_html('Descargar Video');
@@ -85,7 +95,47 @@ if ($is_ajax) {
             print "<p>Error al descargar el video: $download_output</p>";
         } else {
             print "<h2>Video descargado exitosamente en formato $extension.</h2>";
+            my $filename = "$path/" . (glob "$path/*.$extension")[0]; 
+
+            # Extraer metadatos con ffmpeg
+            my $ffmpeg_command = "ffmpeg -i '$filename' 2>&1";
+            my $metadata = `$ffmpeg_command`;
+
+            # Extraer los datos específicos de los metadatos
+            my ($nombre_cancion) = ($metadata =~ /title\s*:\s*(.*)/i) ? $1 : 'Desconocido';
+            my ($artista) = ($metadata =~ /artist\s*:\s*(.*)/i) ? $1 : 'Desconocido';
+            my ($genero) = ($metadata =~ /genre\s*:\s*(.*)/i) ? $1 : 'Desconocido';
+            my $tamano = -s $filename;  # Tamaño del archivo en bytes
+
+            my $insertardatosvideos = $dbh->prepare("INSERT INTO canciones (nombre_cancion, artista, url, formato, tamano, genero, directorio) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $insertardatosvideos->execute($nombre_cancion, $artista, $url, $extension, $tamano, $genero, $path);
+
+            print "<h2>Datos de la canción insertados exitosamente.</h2>";
         }
+
+        print "<h3>Tabla de Canciones:</h3>";
+        my $query = "SELECT * FROM canciones";
+        my $sth = $dbh->prepare($query);
+        $sth->execute();
+
+        print "<table border='1'>";
+        print "<tr><th>ID</th><th>Nombre Canción</th><th>Artista</th><th>URL</th><th>Formato</th><th>Tamaño</th><th>Género</th><th>Directorio</th><th>Fecha Descarga</th></tr>";
+        
+        while (my $row = $sth->fetchrow_hashref) {
+            print "<tr>";
+            print "<td>" . $row->{id} . "</td>";
+            print "<td>" . $row->{nombre_cancion} . "</td>";
+            print "<td>" . $row->{artista} . "</td>";
+            print "<td>" . $row->{url} . "</td>";
+            print "<td>" . $row->{formato} . "</td>";
+            print "<td>" . $row->{tamano} . "</td>";
+            print "<td>" . $row->{genero} . "</td>";
+            print "<td>" . $row->{directorio} . "</td>";
+            print "<td>" . $row->{fecha_descarga} . "</td>";
+            print "</tr>";
+        }
+
+        print "</table>";
 
         # Mostrar lista de archivos en el directorio
         print "<h2>Archivos disponibles en el directorio:</h2>";

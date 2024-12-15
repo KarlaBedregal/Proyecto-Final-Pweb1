@@ -23,14 +23,15 @@ CREATE TABLE IF NOT EXISTS usuarios (
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Crear la tabla de canciones descargadas (relacionada con los usuarios)
+-- Crear la tabla de canciones descargadas 
 CREATE TABLE IF NOT EXISTS canciones (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario_id INT NOT NULL,
     nombre_cancion VARCHAR(255) NOT NULL,
+    artista VARCHAR(255) NOT NULL, 
     url VARCHAR(255) NOT NULL,
     formato VARCHAR(10) NOT NULL,
     fecha_descarga TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     tamano INT,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE ON UPDATE CASCADE
+    genero VARCHAR(255),
+    directorio VARCHAR(255) NOT NULL
 );
