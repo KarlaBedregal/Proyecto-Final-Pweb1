@@ -1,7 +1,7 @@
-docker build -t iwproyecto .
+docker build -t iproyecto .
 
 
-docker run -d -p 8085:80 -p 3307:3306 --name cproyecto iwproyecto
+docker run -d -p 8092:80 -p 3307:3306 --name cproyecto iproyecto
 
 
 docker stop cproyecto
