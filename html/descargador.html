@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Descargar Videos de YouTube</title>
@@ -9,7 +10,6 @@
         function manejarCambioSeleccion() {
             const selectElement = document.getElementById('select');
             const nuevoDirectorio = document.getElementById('nuevo_directorio');
-            
         }
 
         // Función para realizar la solicitud AJAX
@@ -17,7 +17,7 @@
             const xhr = new XMLHttpRequest();
             xhr.open('GET', '/cgi-bin/descargador.pl?directorio=' + encodeURIComponent(directorioSeleccionado), true);
 
-            xhr.onreadystatechange = function() {
+            xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     // Actualizar el texto del directorio seleccionado en la página
                     document.getElementById('directorioSeleccionado').innerText = 'Directorio seleccionado: ' + xhr.responseText;
@@ -25,7 +25,7 @@
             };
 
             xhr.send();
-        }  
+        }
         // Configurar el evento para cuando cambie el valor del <select>
         document.addEventListener('DOMContentLoaded', () => {
             const selectElement = document.getElementById('select');
@@ -36,9 +36,10 @@
         });
     </script>
 </head>
+
 <body>
-    <a href="/cgi-bin/descargas.pl" id="mis_descargas">Mis Descargas</a>
-    <div class="contenedor"></div>
+    <div class="contenedor-flex">
+        <!-- Formulario a la izquierda -->
         <form action="/cgi-bin/descargador.pl" method="GET">
             <label for="select">Elije el nombre para tu lista:</label>
             <select id="select" name="select">
@@ -49,25 +50,37 @@
                 <option value="folclorico">Folclórico</option>
             </select>
 
-            <input type="text" id="nuevo_directorio" name="nuevo_directorio" placeholder="Ingresa el nombre de tu nueva playlist">
+            <input type="text" id="nuevo_directorio" name="nuevo_directorio"
+                placeholder="Ingresa el nombre de tu nueva playlist">
             <br><br>
+            
+            <button type="button" id="cambiar_directorio"
+                onclick="document.getElementById('nuevo_directorio').style.display='inline-block';">Personalizar
+                lista</button>
 
-            <button type="button" id="cambiar_directorio" onclick="document.getElementById('nuevo_directorio').style.display='inline-block';">Personalizar lista</button>
-
+            <br><br>
             <br><br>
 
             <label for="url">URL del Video de YouTube:</label>
             <input type="text" id="url" name="url" required><br><br>
 
             <button type="submit" name="action" value="descargar_mp4">Descargar en MP4</button>
+            <br><br>
             <button type="submit" name="action" value="descargar_mp3">Descargar en MP3</button>
+            <br><br>
             <button type="submit" name="action" value="descargar_avi">Descargar en AVI</button>
             <br><br>
-    </form>
-    <div class="game-container" style="padding: 0; margin-left: 500px; margin-top: -700px;">
-        <canvas id="myCanvas" width="500" height="320"></canvas>
+        </form>
+
+        <!-- Minijuego a la derecha -->
+        <div class="contenedor-derecho">
+            <div class="game-container">
+                <canvas id="myCanvas" width="500" height="320"></canvas>
+            </div>
+        </div>
     </div>
     <script>
+        // Código del juego (sin cambios)
         var canvas = document.getElementById("myCanvas");
         var ctx = canvas.getContext("2d");
         var ballRadius = 10;
@@ -88,7 +101,7 @@
         var brickOffsetTop = 30;
         var brickOffsetLeft = 30;
         var score = 0;
-    
+
         var bricks = [];
         for (var c = 0; c < brickColumnCount; c++) {
             bricks[c] = [];
@@ -96,11 +109,11 @@
                 bricks[c][r] = { x: 0, y: 0, status: 1 };
             }
         }
-    
+
         document.addEventListener("keydown", keyDownHandler, false);
         document.addEventListener("keyup", keyUpHandler, false);
         document.addEventListener("mousemove", mouseMoveHandler, false);
-    
+
         function keyDownHandler(e) {
             if (e.code == "ArrowRight") {
                 rightPressed = true;
@@ -109,7 +122,7 @@
                 leftPressed = true;
             }
         }
-    
+
         function keyUpHandler(e) {
             if (e.code == 'ArrowRight') {
                 rightPressed = false;
@@ -118,14 +131,14 @@
                 leftPressed = false;
             }
         }
-    
+
         function mouseMoveHandler(e) {
             var relativeX = e.clientX - canvas.offsetLeft;
             if (relativeX > 0 && relativeX < canvas.width) {
                 paddleX = relativeX - paddleWidth / 2;
             }
         }
-    
+
         function collisionDetection() {
             for (var c = 0; c < brickColumnCount; c++) {
                 for (var r = 0; r < brickRowCount; r++) {
@@ -145,7 +158,7 @@
                 }
             }
         }
-    
+
         function drawBall() {
             ctx.beginPath();
             ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
@@ -153,15 +166,15 @@
             ctx.fill();
             ctx.closePath();
         }
-    
+
         function drawPaddle() {
             ctx.beginPath();
             ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
-            ctx.fillStyle = "#ffffff";
+            ctx.fillStyle = "#0f0f04";
             ctx.fill();
             ctx.closePath();
         }
-    
+
         function drawBricks() {
             for (var c = 0; c < brickColumnCount; c++) {
                 for (var r = 0; r < brickRowCount; r++) {
@@ -179,13 +192,13 @@
                 }
             }
         }
-    
+
         function drawScore() {
             ctx.font = "16px Arial";
             ctx.fillStyle = "#1f0b0b";
             ctx.fillText("Score: " + score, 8, 20);
         }
-    
+
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             drawBricks();
@@ -193,12 +206,12 @@
             drawPaddle();
             drawScore();
             collisionDetection();
-    
+
             // Rebote de la pelota contra los bordes del canvas
             if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
                 dx = -dx;
             }
-    
+
             if (y + dy < ballRadius) {
                 dy = -dy;
             }
@@ -209,7 +222,7 @@
                 }
                 // Aquí no reiniciamos la pelota si se cae
             }
-    
+
             // Movimiento de la pala
             if (rightPressed && paddleX < canvas.width - paddleWidth) {
                 paddleX += 7;
@@ -217,14 +230,20 @@
             else if (leftPressed && paddleX > 0) {
                 paddleX -= 7;
             }
-    
+
             // Actualizamos la posición de la pelota
             x += dx;
             y += dy;
+
             requestAnimationFrame(draw);
         }
-    
+
         draw();
     </script>
+
+    <a href="/cgi-bin/descargas.pl" id="mis_descargas">Historial</a>
+    <a href="/cgi-bin/ver_canciones.pl" id="mis_descargas">Mis Descargas</a>
+
 </body>
+
 </html>

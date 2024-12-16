@@ -1,59 +1,68 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Usuario</title>
-    <link rel="stylesheet" href="./formularios.css">
+    <link rel="stylesheet" href="./estilo1.css">
 </head>
+
 <body>
-    <h1>Formulario de Registro</h1>
-    <form action="/cgi-bin/registro.pl" method="POST">
-        <!-- Campos de nombre y apellido en una fila -->
-        <div class="input-group">
-            <div>
-                <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" name="nombre" required>
-            </div>
-            <div>
-                <label for="apellido">Apellido:</label>
-                <input type="text" id="apellido" name="apellido" required>
+
+    <body class="fondo-animado-izquierda">
+        <div class="contenedor-flex">
+            <div class="contenedor-derecho">
+                <h1 class="typing-effect">Registrarse</h1>
+                <form action="/cgi-bin/registro.pl" method="POST">
+                    <!-- Campos de nombre y apellido en una fila -->
+                    <div class="input-group">
+                        <div>
+                            <label for="nombre">Nombre:</label>
+                            <input type="text" id="nombre" name="nombre" required>
+                        </div>
+                        <div>
+                            <label for="apellido">Apellido:</label>
+                            <input type="text" id="apellido" name="apellido" required>
+                        </div>
+                    </div>
+
+                    <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
+                    <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
+
+                    <label for="usuario">Nombre de Usuario:</label>
+                    <input type="text" id="usuario" name="usuario" required>
+
+                    <label for="correo">Correo Electrónico:</label>
+                    <input type="email" id="correo" name="correo" required>
+
+                    <div class="input-group">
+                        <div>
+                            <label for="password">Contraseña:</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        <div>
+                            <label for="confirmar_password">Confirmar Contraseña:</label>
+                            <input type="password" id="confirmar_password" name="confirmar_password" required>
+                        </div>
+                    </div>
+
+                    <label for="edad">Edad:</label>
+                    <input type="number" id="edad" name="edad" min="5" required>
+
+                    <label for="genero">Género:</label>
+                    <select id="genero" name="genero" required>
+                        <option value="M">Masculino</option>
+                        <option value="F">Femenino</option>
+                    </select>
+
+                    <label for="telefono">Teléfono:</label>
+                    <input type="tel" id="telefono" name="telefono" pattern="[0-9]{9}" required>
+
+                    <input type="submit" value="Registrar">
+                </form>
             </div>
         </div>
+    </body>
 
-        <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
-        <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
-
-        <label for="usuario">Nombre de Usuario:</label>
-        <input type="text" id="usuario" name="usuario" required>
-
-        <label for="correo">Correo Electrónico:</label>
-        <input type="email" id="correo" name="correo" required>
-
-        <div class="input-group">
-            <div>
-                <label for="password">Contraseña:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <div>
-                <label for="confirmar_password">Confirmar Contraseña:</label>
-                <input type="password" id="confirmar_password" name="confirmar_password" required>
-            </div>
-        </div>
-
-        <label for="edad">Edad:</label>
-        <input type="number" id="edad" name="edad" min="5" required>
-
-        <label for="genero">Género:</label>
-        <select id="genero" name="genero" required>
-            <option value="M">Masculino</option>
-            <option value="F">Femenino</option>
-        </select>
-
-        <label for="telefono">Teléfono:</label>
-        <input type="tel" id="telefono" name="telefono" pattern="[0-9]{9}" required>
-
-        <input type="submit" value="Registrar">
-    </form>
-</body>
 </html>

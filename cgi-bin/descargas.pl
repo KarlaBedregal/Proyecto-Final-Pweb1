@@ -32,7 +32,172 @@ my $sth_directorio = $dbh->prepare($query_directorio);
 $sth_directorio->execute();
 
 print $cgi->header('text/html; charset=UTF-8');
-print $cgi->start_html('Tabla de Canciones');
+
+print <<EOF;
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabla de descargas</title>
+    <style>
+        body {
+        font-family: Arial, sans-serif;
+        background-color: #ffffff;
+        margin: 0 20px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        height: 100vh; 
+    }
+
+    * {
+        box-sizing: border-box; /* Ajusta el tamaño para todos los elementos */
+    }
+
+    h1 {
+        font-size: 3rem;
+        color: #4facfe;
+        margin-bottom: 50px; 
+        text-align: center; /* Alinea el título al centro */
+    }
+
+    label {
+        color: #2e2708ab; /* Cambia el color del texto */
+        font-size: 16px; /* Tamaño de fuente opcional */
+        margin-bottom: 5px; /* Espaciado opcional */
+        display: block; /* Asegura que el label ocupe toda la línea */
+    }
+
+    form {
+        width: 100%;
+        max-width: 400px; /* Tamaño máximo del formulario */
+        padding: 20px;
+        border-radius: 20px;
+        margin: 0; /* Alinear el formulario al borde izquierdo */
+        background-color: rgba(255, 255, 255, 0); /* Fondo semitransparente */
+        border: 1px solid #1c1c1c00;
+    }
+
+    .input-group {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .input-group div {
+        width: 48%;
+    }
+
+    input[type="text"], 
+    input[type="password"], 
+    input[type="email"], 
+    input[type="date"], 
+    input[type="number"], 
+    input[type="tel"],
+    select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #382a1c; /* Cambia el color del borde */
+        border-radius: 30px;
+        background-color: rgba(158, 103, 48, 0); /* Cambia el color de fondo si lo deseas */
+        color: #1b1b1b; /* Cambia el color del texto */
+    }
+
+    /* Estilo cuando el campo está en foco (al hacer clic) */
+    input[type="text"]:focus, 
+    input[type="password"]:focus, 
+    input[type="email"]:focus, 
+    input[type="date"]:focus, 
+    input[type="number"]:focus, 
+    select:focus {
+        border-color: #33b819; /* Cambia el borde al hacer foco */
+        outline: none; /* Elimina el contorno predeterminado */
+    }
+
+    input[type="submit"] {
+        background-color: #6dd436;
+        color: white;
+        padding: 12px 18px; /* Aumenté el padding para hacerlo más grande */
+        border: none;
+        border-radius: 8px; /* Bordes más redondeados */
+        cursor: pointer;
+        width: 100%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Agregué sombra */
+        transition: all 0.3s ease; /* Transición suave para hover */
+    }
+
+    /* Estilos para las tablas */
+    table {
+        width: 100%;
+        border-collapse: collapse; /* Hace que las celdas estén unidas */
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: center; /* Centra el contenido de las celdas */
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #4facfe;
+        color: white;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2; /* Agrega un color de fondo alternativo para filas pares */
+    }
+
+    /* Estilos para el modal de edición */
+    #modalEdit {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    #modalEdit div {
+        background-color: #fff;
+        padding: 20px;
+        width: 300px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    button {
+        margin: 5px;
+    }
+
+    /* Estilos de los botones al final */
+    button {
+        padding: 10px 20px;
+        background-color: #6dd436;
+        border: none;
+        border-radius: 8px;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #4caf50; /* Cambio de color al pasar el mouse */
+    }
+
+    </style>
+    </head>
+
+<body>
+<div class="contenedor-flex">
+EOF
 
 while (my $dir_row = $sth_directorio->fetchrow_hashref) {
     my $directorio = $dir_row->{directorio};
@@ -56,8 +221,8 @@ while (my $dir_row = $sth_directorio->fetchrow_hashref) {
 
         # Enlaces para editar y eliminar con AJAX
         print "<td>";
-        print "<a href='#' onclick='editarCancion(" . $row->{id} . ", \"" . $row->{nombre_cancion} . "\")'>Editar</a> | ";
-        print "<a href='#' onclick='eliminarCancion(" . $row->{id} . ")'>Eliminar</a> |";
+        print "<button href='#' onclick='editarCancion(" . $row->{id} . ", \"" . $row->{nombre_cancion} . "\")'>Editar</button> | ";
+        print "<button href='#' onclick='eliminarCancion(" . $row->{id} . ")'>Eliminar</button> |";
         print "</td>";
     }
 
@@ -83,8 +248,8 @@ print <<'HTML';
 
 
 <!-- Botones adicionales -->
-<div style="margin-top:20px;">
-    <button onclick="history.back()">Volver</button>
+<div>
+    <button onclick="history.back()">Volver</button> <br><br>
     <form action="config.pl" method="get">
         <button type="submit">Cambiar las propiedades de mis descargas</button>
     </form>

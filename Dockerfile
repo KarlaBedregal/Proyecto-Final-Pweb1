@@ -4,7 +4,6 @@ FROM debian:latest
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Instalar MariaDB, Apache, Perl y módulos requeridos
-# Instalar MariaDB, Apache, Perl y módulos requeridos
 RUN apt-get update && apt-get install -y \
     mariadb-server \
     mariadb-client \
@@ -36,9 +35,11 @@ RUN mkdir -p /var/www/html/cgi-bin
 COPY ./cgi-bin/*.pl /var/www/html/cgi-bin/
 COPY ./html/*.html /var/www/html/
 COPY ./html/styles.css /var/www/html/
-COPY ./html/formularios.css /var/www/html/
-COPY ./html/estilosdescargador.css /var/www/html/ 
+COPY ./html/estilo1.css /var/www/html/
+COPY ./html/estilosdescargador.css /var/www/html/
+COPY ./html/config.css /var/www/html/
 COPY ./images/iconodownloaderbyte.png /var/www/html/images/
+COPY ./images/imagen.jpg /var/www/html/images/
 COPY ./init.sql /tmp/init.sql
 
 # Establecer permisos adecuados para los scripts CGI

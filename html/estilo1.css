@@ -1,7 +1,6 @@
 /* Estilo general */
 body {
     font-family: Arial, sans-serif;
-    background-color: #ffffff;
     margin: 0;
     padding: 0;
 }
@@ -10,35 +9,85 @@ body {
     box-sizing: border-box; /* Ajusta el tamaño para todos los elementos */
 }
 
+body.fondo-animado-centro {
+    background: 
+        /*linear-gradient(to right, rgba(232, 195, 158, 0.3) 0%, #e8c39e 67%, rgba(37, 37, 32, 0) 100%), 
+        linear-gradient(to left, rgba(232, 195, 158, 0.3) 0%, rgba(232, 195, 158, 1) 67%, rgba(37, 37, 32, 0) 100%),*/
+        url('../images/imagen.jpg') repeat-y; /* Repite la imagen en vertical */
+    background-size: 100% auto; /* Estiramos la imagen para ajustarla a la pantalla */
+    background-position: center top;
+    background-attachment: fixed; /* Fondo fijo para el efecto de parallax */
+    animation: scrollBackground 80s linear infinite; /* Animación suave */
+}
+
+@keyframes scrollBackground {
+    0% {
+        background-position: center top; /* Empieza desde arriba */
+    }
+    100% {
+        background-position: center bottom; /* Termina abajo */
+    }
+}
+
+.fondo-animado-izquierda {
+    background-image: 
+        /*linear-gradient(to right, #e8c39e 30%, rgba(0, 0, 0, 0) 100%), */
+        url('../images/imagen.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    animation: scrollBackground 80s linear infinite; /* Animación suave */
+}
+
+@keyframes scrollBackground {
+    0% {
+        background-position: center top; /* Empieza desde arriba */
+    }
+    100% {
+        background-position: center bottom; /* Termina abajo */
+    }
+}
+
 .contenedor-flex {
     background-color: rgba(255, 255, 255, 0.96);
     display: flex; 
     align-items: center; 
     justify-content: center;
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 0px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    text-align: center;
-    width: 100%;
+    text-align: left;
+    width: 48%; /* Casi la mitad de la pantalla */
     max-width: 1100px;
-    margin: 20px auto;
+    margin: 0 0 0 auto; /* Empuja todo el contenedor hacia la derecha */
+    height: 100%; /* Ocupará toda la altura de la página */
 }
 
 .contenedor-flex-centro {
-    background-color: rgba(243, 219, 195, 0.582);
+    background-color: rgba(255, 255, 255, 0.96);
     display: flex; 
     align-items: center; 
     justify-content: center;
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 0px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    text-align: center;
-    width: 40%;
+    text-align: left;
+    width: 48%; /* Ocupa casi la mitad de la página */
     max-width: 1100px;
-    margin: 40px auto;
+    margin: 0px 0 0px 0; /* Quita margen automático a los lados */
+    height: 100vh; /* O usa height: 100vh si quieres ocupar la altura de la página */
 }
 
+.contenedor-derecho {
 
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    /* Animación para el deslizamiento */
+    opacity: 0;
+    transform: translateY(-50px);
+    animation: slideIn 1s forwards;
+}
 
 @keyframes slideIn {
     to {
@@ -65,32 +114,10 @@ h1 {
     text-align: center; /* Alinea el título al centro */
 }
 
-#mis_descargas {
-    display: inline-block; /* Se comporta como un botón */
-    padding: 15px 30px; /* Espacio interno (arriba/abajo y izquierda/derecha) */
-    font-size: 18px; /* Tamaño del texto */
-    font-weight: bold; /* Negrita */
-    text-align: center; /* Centrar el texto dentro del botón */
-    color: #fff; /* Color del texto (blanco) */
-    background-color: #2e2e27; /* Color de fondo (verde) */
-    border-radius: 10px; /* Bordes redondeados */
-    text-decoration: none; /* Quita el subrayado del enlace */
-    margin: 20px auto; /* Espacio superior e inferior, y centrado horizontal */
-    display: block; /* Se asegura de que ocupe una línea completa */
-    width: 200px; /* Ancho del botón */
-    text-align: center; /* Centrar texto dentro del botón */
-    transition: background-color 0.3s; /* Efecto de transición suave */
-}
-
-#mis_descargas:hover {
-    background-color: #3c3c33; /* Cambia el color cuando pasas el cursor */
-}
-
-
 .typing-effect {
-    font-size: 2em;
+    font-size: 3em;
     font-weight: bold;
-    color: white;
+    color: 4facfe;
     display: inline-block;
     border-right: 3px solid #fff; /* Añade el cursor que parpadea */
     padding-right: 5px; /* Espacio extra para el cursor */
@@ -130,7 +157,6 @@ form {
     background-color: rgba(255, 255, 255, 0); /* Fondo semitransparente */
     border: 1px solid #1c1c1c00;
 }
-
 
 .input-group {
     display: flex;
@@ -191,23 +217,3 @@ input[type="submit"]:active {
     transform: translateY(1px); /* Movimiento hacia abajo al hacer clic */
     box-shadow: 0 0 15px rgba(46, 46, 39, 0.7); /* Efecto de resplandor */
 }
-
-button {
-    background-color: #6dd436;
-    color: white;
-    padding: 12px 18px;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #3c3c33; /* Cambié el color al hacer hover */
-    transform: translateY(-3px); /* Movimiento sutil hacia arriba */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada en hover */
-}
-
-

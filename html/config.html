@@ -1,90 +1,96 @@
 <!doctype html>
 <html lang="es">
+
 <head>
-    <meta charset="utf-8">
-    <title>Configuración</title>
-     <link rel="stylesheet" href="estilos.css">
- 
-  </head>
-  <body>
-	  <h2>Configuración :)</h2>
-       <form action="/cgi-bin/config.pl" method="GET">
-          <strong>Seleccionar video descargado</strong>
-          <select id="videoDescargado" name="videoDescargado">
+     <meta charset="utf-8">
+     <title>Configuración</title>
+     <link rel="stylesheet" href="estilosdescargador.css">
 
-          </select><br><br>     
+</head>
 
-          <strong>Convertir &nbsp;De&nbsp;&nbsp;</strong>
-          <select id="menuconfinicial" name="selectmenuinicial">
-            <option value="mp4">MP4</option>
-            <option value="mp3">MP3</option>
-            <option value="avi">AVI</option>
-            
-        </select>
+<body>
+     <div class="contenedor-flex-centro">
+          <div class="contenedor-centro">
+          <h2>Configuración :)</h2>
+          <form action="/cgi-bin/config.pl" method="GET">
+               <strong>Seleccionar video descargado</strong>
+               <select id="videoDescargado" name="videoDescargado">
 
-        <strong>&nbsp;a&nbsp;</Strong>
-        
-        <select id="menuconfifinal" name="selectmenufinal">
-            <option value="mp4">MP4</option>
-            <option value="mp3">MP3</option>
-            <option value="avi">AVI</option>
-            
-        </select><br><br>   
+               </select><br><br>
 
-        <Strong>Propiedades del video de salida</Strong><br>
-           
-        <p>Resolución 
-             <select id="resolucion" name="selectedresolucion">
-             <option value="480p">480p (SD)</option>
-             <option value="720p">720P (HD)</option>
-             <option value="1080p">1080P (Full HD)</option>
-             <option value="1440p">1440 (Quad HD o 2K)</option>
-             <option value="2160p">2160P (4K o Ultra HD)</option>
-             <option value="4320p">4320p (8K)</option>
-             </select>
-        </p>
+               <strong>Convertir &nbsp;De&nbsp;&nbsp;</strong>
+               <select id="menuconfinicial" name="selectmenuinicial">
+                    <option value="mp4">MP4</option>
+                    <option value="mp3">MP3</option>
+                    <option value="avi">AVI</option>
 
-       <p>Proporción de la imagen 
-             <select id="proporcionimagen" name="selectedproporcionimagen">
-             <option value="4.3">4:3</option>
-             <option value="16.9">16:9</option>
-             <option value="21.9">21:9</option>
-             <option value="1.1">1:1</option>
-             <option value="16.10">16:10</option>
-             </select>
-        </p><br><br>
+               </select>
 
-       <Strong>Propiedades del audio de salida</Strong><br>
-        <p>Codificacion de audio 
-             <select id="inicialaudiomp3" name="selectedaudioinicial">
-             <option value="mp3">MP3 - libmp3lame</option>
-             <option value="aac">AAC - libfdk_aac</option>
-             <option value="flac">FLAC - libFLAC</option>
-             <option value="wav">WAV</option>
-             <option value="ogg">OGG - libvorbis</option>
-             <option value="opus">Opus - libopus</option>
-             </select>
-        </p>
-           
-        <p>Frecuencia 
-             <select id="frecuencia" name="selectedfrecuencia">
-             <option value="44.1khz">44.1 kHz</option>
-             <option value="48khz">48 kHz</option>
-             <option value="96khz">96 kHz</option>
-             <option value="192khz">192 kHz</option>
-             </select>
-        </p>
+               <strong>&nbsp;a&nbsp;</Strong>
 
-       <p>Canales 
-             <select id="canales" name="selectedcanales">
-             <option value="mono">Mono</option>
-             <option value="stereo">Estéreo</option>
-             <option value="5.1">5.1 Surround</option>
-             <option value="7.1">7.1 Surround</option>
-             </select>
-        </p><br>
+               <select id="menuconfifinal" name="selectmenufinal">
+                    <option value="mp4">MP4</option>
+                    <option value="mp3">MP3</option>
+                    <option value="avi">AVI</option>
 
-        <button type="submit" name="accion" value="actualizar">Actualizar canciones descargadas</button>
+               </select><br><br>
 
-  </body>
+               <Strong>Propiedades del video de salida</Strong><br>
+
+               <p>Resolución
+                    <select id="resolucion" name="selectedresolucion">
+                         <option value="480p">480p (SD)</option>
+                         <option value="720p">720P (HD)</option>
+                         <option value="1080p">1080P (Full HD)</option>
+                         <option value="1440p">1440 (Quad HD o 2K)</option>
+                         <option value="2160p">2160P (4K o Ultra HD)</option>
+                         <option value="4320p">4320p (8K)</option>
+                    </select>
+               </p>
+
+               <p>Proporción de la imagen
+                    <select id="proporcionimagen" name="selectedproporcionimagen">
+                         <option value="4.3">4:3</option>
+                         <option value="16.9">16:9</option>
+                         <option value="21.9">21:9</option>
+                         <option value="1.1">1:1</option>
+                         <option value="16.10">16:10</option>
+                    </select>
+               </p><br><br>
+
+               <Strong>Propiedades del audio de salida</Strong><br>
+               <p>Codificacion de audio
+                    <select id="inicialaudiomp3" name="selectedaudioinicial">
+                         <option value="mp3">MP3 - libmp3lame</option>
+                         <option value="aac">AAC - libfdk_aac</option>
+                         <option value="flac">FLAC - libFLAC</option>
+                         <option value="wav">WAV</option>
+                         <option value="ogg">OGG - libvorbis</option>
+                         <option value="opus">Opus - libopus</option>
+                    </select>
+               </p>
+
+               <p>Frecuencia
+                    <select id="frecuencia" name="selectedfrecuencia">
+                         <option value="44.1khz">44.1 kHz</option>
+                         <option value="48khz">48 kHz</option>
+                         <option value="96khz">96 kHz</option>
+                         <option value="192khz">192 kHz</option>
+                    </select>
+               </p>
+
+               <p>Canales
+                    <select id="canales" name="selectedcanales">
+                         <option value="mono">Mono</option>
+                         <option value="stereo">Estéreo</option>
+                         <option value="5.1">5.1 Surround</option>
+                         <option value="7.1">7.1 Surround</option>
+                    </select>
+               </p><br>
+
+               <button type="submit" name="accion" value="actualizar">Actualizar canciones descargadas</button>
+     </div>
+</div>
+</body>
+
 </html>
