@@ -27,41 +27,42 @@ if ($accion eq 'eliminar' && $id_cancion) {
 }
 
 # Consultar la base de datos
-my $query = "SELECT * FROM canciones";
-my $sth = $dbh->prepare($query);
-$sth->execute();
+my $query_directorio = "SELECT DISTINCT directorio FROM canciones";
+my $sth_directorio = $dbh->prepare($query_directorio);
+$sth_directorio->execute();
 
 print $cgi->header('text/html; charset=UTF-8');
 print $cgi->start_html('Tabla de Canciones');
 
-# Mostrar el nombre del directorio
-my $directorio = 'Mis favoritos';  # Aquí puedes cambiar el directorio dinámicamente si lo necesitas
-print "<h2>Directorio: $directorio</h2>";
+while (my $dir_row = $sth_directorio->fetchrow_hashref) {
+    my $directorio = $dir_row->{directorio};
+    print "<h2>Lista: $directorio</h2>";
 
-# Mostrar los datos de la tabla
-print "<h3>Tabla de Canciones:</h3>";
-print "<table border='1'>";
-print "<tr><th>ID</th><th>Nombre Canción</th><th>URL</th><th>Formato</th><th>Directorio</th><th>Fecha Descarga</th><th>Acciones</th></tr>";
+    # Consultar las canciones de ese directorio
+    my $query_canciones = "SELECT * FROM canciones WHERE directorio = ?";
+    my $sth_canciones = $dbh->prepare($query_canciones);
+    $sth_canciones->execute($directorio);
 
-while (my $row = $sth->fetchrow_hashref) {
-    print "<tr>";
-    print "<td>" . $row->{id} . "</td>";
-    print "<td>" . $row->{nombre_cancion} . "</td>";
-    print "<td>" . $row->{url} . "</td>";
-    print "<td>" . $row->{formato} . "</td>";
-    print "<td>" . $row->{directorio} . "</td>";
-    print "<td>" . $row->{fecha_descarga} . "</td>";
+    print "<table border='1'>";
+    print "<tr><th>ID</th><th>Nombre Canción</th><th>URL</th><th>Directorio</th><th>Fecha Descarga</th><th>Acciones</th></tr>";
 
-    # Enlaces para editar y eliminar con AJAX
-    print "<td>";
-    print "<a href='#' onclick='editarCancion(" . $row->{id} . ", \"" . $row->{nombre_cancion} . "\")'>Editar</a> | ";
-    print "<a href='#' onclick='eliminarCancion(" . $row->{id} . ")'>Eliminar</a>";
-    print "</td>";
+    while (my $row = $sth_canciones->fetchrow_hashref) {
+        print "<tr>";
+        print "<td>" . $row->{id} . "</td>";
+        print "<td>" . $row->{nombre_cancion} . "</td>";
+        print "<td>" . $row->{url} . "</td>";
+        print "<td>" . $row->{formato} . "</td>";
+        print "<td>" . $row->{fecha_descarga} . "</td>";
 
-    print "</tr>";
+        # Enlaces para editar y eliminar con AJAX
+        print "<td>";
+        print "<a href='#' onclick='editarCancion(" . $row->{id} . ", \"" . $row->{nombre_cancion} . "\")'>Editar</a> | ";
+        print "<a href='#' onclick='eliminarCancion(" . $row->{id} . ")'>Eliminar</a> |";
+        print "</td>";
+    }
+
+    print "</table>";
 }
-
-print "</table>";
 
 # Agregar el modal de edición
 print <<'HTML';
@@ -78,6 +79,15 @@ print <<'HTML';
             <button type="button" onclick="cerrarModal()">Cerrar</button>
         </form>
     </div>
+</div>
+
+
+<!-- Botones adicionales -->
+<div style="margin-top:20px;">
+    <button onclick="history.back()">Volver</button>
+    <form action="config.pl" method="get">
+        <button type="submit">Cambiar las propiedades de mis descargas</button>
+    </form>
 </div>
 
 <script>
@@ -125,6 +135,7 @@ print <<'HTML';
             xhr.send('action=eliminar&id_cancion=' + id);
         }
     }
+    
 </script>
 HTML
 

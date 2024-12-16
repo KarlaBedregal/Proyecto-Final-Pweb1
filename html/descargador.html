@@ -3,19 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Descargar Videos de YouTube</title>
+    <h1>DOWNLOADERBYTE</h1>
     <link rel="stylesheet" href="estilosdescargador.css">
     <script>
         function manejarCambioSeleccion() {
             const selectElement = document.getElementById('select');
             const nuevoDirectorio = document.getElementById('nuevo_directorio');
-
-            // Mostrar el campo de texto solo si la opción es "personalizado"
-            if (selectElement.value === 'personalizado') {
-                nuevoDirectorio.style.display = 'inline-block';
-            } else {
-                nuevoDirectorio.style.display = 'none';
-            }
-            actualizarDirectorio(selectElement.value);
+            
         }
 
         // Función para realizar la solicitud AJAX
@@ -43,40 +37,194 @@
     </script>
 </head>
 <body>
-    <a href="/descargas.html" id="mis_descargas">Mis Descargas</a>
+    <a href="/cgi-bin/descargas.pl" id="mis_descargas">Mis Descargas</a>
+    <div class="contenedor"></div>
+        <form action="/cgi-bin/descargador.pl" method="GET">
+            <label for="select">Elije el nombre para tu lista:</label>
+            <select id="select" name="select">
+                <option value="favoritos" selected>Mis favoritos</option>
+                <option value="rock">Rock</option>
+                <option value="pop">Pop</option>
+                <option value="regueton">Reguetón</option>
+                <option value="folclorico">Folclórico</option>
+            </select>
 
-    <h2>DOWNLOADERBYTE</h2>
-    <form action="/cgi-bin/descargador.pl" method="GET">
-        <label for="select">Elije el nombre para tu lista:</label>
-        <select id="select" name="select">
-            <option value="favoritos" selected>Mis favoritos</option>
-            <option value="rock">Rock</option>
-            <option value="pop">Pop</option>
-            <option value="regueton">Reguetón</option>
-            <option value="folclorico">Folclórico</option>
-            <option value="personalizado">Personalizado</option>
-        </select>
+            <input type="text" id="nuevo_directorio" name="nuevo_directorio" placeholder="Ingresa el nombre de tu nueva playlist">
+            <br><br>
 
-        <input type="text" id="nuevo_directorio" name="nuevo_directorio" placeholder="Ingresa el nombre de tu nueva playlist">
-        <br><br>
+            <button type="button" id="cambiar_directorio" onclick="document.getElementById('nuevo_directorio').style.display='inline-block';">Personalizar lista</button>
 
-        <!-- Mostrar el directorio seleccionado si está disponible -->
-        <p>Directorio seleccionado: <span id="directorio_seleccionado">Mis favoritos</span></p>
+            <br><br>
 
-        <!-- Botón para cambiar el directorio -->
-        <button type="button" id="cambiar_directorio" onclick="document.getElementById('nuevo_directorio').style.display='inline-block';">Cambiar lista</button>
+            <label for="url">URL del Video de YouTube:</label>
+            <input type="text" id="url" name="url" required><br><br>
 
-        <br><br>
-
-        <label for="url">URL del Video de YouTube:</label>
-        <input type="text" id="url" name="url" required><br><br>
-
-        <button type="submit" name="action" value="descargar_mp4">Descargar en MP4</button>
-        <button type="submit" name="action" value="descargar_mp3">Descargar en MP3</button>
-        <button type="submit" name="action" value="descargar_avi">Descargar en AVI</button>
-        <br><br>
-
-        <img src="images/png-transparent-video-camera-color-gradient-3d-icon-thumbnail.png" alt="imagen de sonido" style="width: 170px; height: 170px;">
+            <button type="submit" name="action" value="descargar_mp4">Descargar en MP4</button>
+            <button type="submit" name="action" value="descargar_mp3">Descargar en MP3</button>
+            <button type="submit" name="action" value="descargar_avi">Descargar en AVI</button>
+            <br><br>
     </form>
+    <div class="game-container" style="padding: 0; margin-left: 500px; margin-top: -700px;">
+        <canvas id="myCanvas" width="500" height="320"></canvas>
+    </div>
+    <script>
+        var canvas = document.getElementById("myCanvas");
+        var ctx = canvas.getContext("2d");
+        var ballRadius = 10;
+        var x = canvas.width / 2;
+        var y = canvas.height - 30;
+        var dx = 2;
+        var dy = -2;
+        var paddleHeight = 10;
+        var paddleWidth = 75;
+        var paddleX = (canvas.width - paddleWidth) / 2;
+        var rightPressed = false;
+        var leftPressed = false;
+        var brickRowCount = 5;
+        var brickColumnCount = 3;
+        var brickWidth = 75;
+        var brickHeight = 20;
+        var brickPadding = 10;
+        var brickOffsetTop = 30;
+        var brickOffsetLeft = 30;
+        var score = 0;
+    
+        var bricks = [];
+        for (var c = 0; c < brickColumnCount; c++) {
+            bricks[c] = [];
+            for (var r = 0; r < brickRowCount; r++) {
+                bricks[c][r] = { x: 0, y: 0, status: 1 };
+            }
+        }
+    
+        document.addEventListener("keydown", keyDownHandler, false);
+        document.addEventListener("keyup", keyUpHandler, false);
+        document.addEventListener("mousemove", mouseMoveHandler, false);
+    
+        function keyDownHandler(e) {
+            if (e.code == "ArrowRight") {
+                rightPressed = true;
+            }
+            else if (e.code == 'ArrowLeft') {
+                leftPressed = true;
+            }
+        }
+    
+        function keyUpHandler(e) {
+            if (e.code == 'ArrowRight') {
+                rightPressed = false;
+            }
+            else if (e.code == 'ArrowLeft') {
+                leftPressed = false;
+            }
+        }
+    
+        function mouseMoveHandler(e) {
+            var relativeX = e.clientX - canvas.offsetLeft;
+            if (relativeX > 0 && relativeX < canvas.width) {
+                paddleX = relativeX - paddleWidth / 2;
+            }
+        }
+    
+        function collisionDetection() {
+            for (var c = 0; c < brickColumnCount; c++) {
+                for (var r = 0; r < brickRowCount; r++) {
+                    var b = bricks[c][r];
+                    if (b.status == 1) {
+                        if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
+                            dy = -dy;
+                            b.status = 0;
+                            score++;
+                            setTimeout(function (c, r) {
+                                bricks[c][r].status = 1; // Reinicia el bloque
+                                bricks[c][r].x = Math.random() * (canvas.width - brickWidth);
+                                bricks[c][r].y = Math.random() * (canvas.height / 2); // Posición aleatoria en la parte superior
+                            }, 3000, c, r); // Regenera el bloque después de 3 segundos
+                        }
+                    }
+                }
+            }
+        }
+    
+        function drawBall() {
+            ctx.beginPath();
+            ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+            ctx.fillStyle = "#0f0c5e";
+            ctx.fill();
+            ctx.closePath();
+        }
+    
+        function drawPaddle() {
+            ctx.beginPath();
+            ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
+            ctx.fillStyle = "#ffffff";
+            ctx.fill();
+            ctx.closePath();
+        }
+    
+        function drawBricks() {
+            for (var c = 0; c < brickColumnCount; c++) {
+                for (var r = 0; r < brickRowCount; r++) {
+                    if (bricks[c][r].status == 1) {
+                        var brickX = (r * (brickWidth + brickPadding)) + brickOffsetLeft;
+                        var brickY = (c * (brickHeight + brickPadding)) + brickOffsetTop;
+                        bricks[c][r].x = brickX;
+                        bricks[c][r].y = brickY;
+                        ctx.beginPath();
+                        ctx.rect(brickX, brickY, brickWidth, brickHeight);
+                        ctx.fillStyle = "#91502a";
+                        ctx.fill();
+                        ctx.closePath();
+                    }
+                }
+            }
+        }
+    
+        function drawScore() {
+            ctx.font = "16px Arial";
+            ctx.fillStyle = "#1f0b0b";
+            ctx.fillText("Score: " + score, 8, 20);
+        }
+    
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawBricks();
+            drawBall();
+            drawPaddle();
+            drawScore();
+            collisionDetection();
+    
+            // Rebote de la pelota contra los bordes del canvas
+            if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+                dx = -dx;
+            }
+    
+            if (y + dy < ballRadius) {
+                dy = -dy;
+            }
+            else if (y + dy > canvas.height - ballRadius) {
+                // No reiniciar la partida cuando la pelota se sale por el fondo
+                if (x > paddleX && x < paddleX + paddleWidth) {
+                    dy = -dy;
+                }
+                // Aquí no reiniciamos la pelota si se cae
+            }
+    
+            // Movimiento de la pala
+            if (rightPressed && paddleX < canvas.width - paddleWidth) {
+                paddleX += 7;
+            }
+            else if (leftPressed && paddleX > 0) {
+                paddleX -= 7;
+            }
+    
+            // Actualizamos la posición de la pelota
+            x += dx;
+            y += dy;
+            requestAnimationFrame(draw);
+        }
+    
+        draw();
+    </script>
 </body>
 </html>

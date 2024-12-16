@@ -90,7 +90,7 @@ if ($is_ajax) {
 
         # Ejecutar el comando de descarga
         my $download_output = `$download_command 2>&1`;
-
+        my $directorio_guardado = $nuevo_directorio || $directorio;
         if ($? != 0) {
             print "<p>Error al descargar el video: $download_output</p>";
         } else {
@@ -103,54 +103,20 @@ if ($is_ajax) {
 
             # Extraer los datos de la URL del video
             my $nombre_cancion = $metadata->{title} || 'Desconocido';
-            my $directorio_guardado = $nuevo_directorio || $directorio;
+            $directorio_guardado = $nuevo_directorio || $directorio;
 
             my $insertardatosvideos = $dbh->prepare("INSERT INTO canciones (nombre_cancion, url, formato, directorio) VALUES (?, ?, ?, ?)");
             $insertardatosvideos->execute($nombre_cancion, $url, $extension, $directorio_guardado);
 
-            print "<h2>Datos de la canción insertados exitosamente.</h2>";
         }
+        print "<form action='/cgi-bin/ver_canciones.pl' method='get'>";
+        print "<input type='hidden' name='directorio' value='$directorio_guardado'>";
+        print "<input type='submit' value='Ver canciones descargadas'>";
+        print "</form>";
 
-        print "<h3>Tabla de Canciones:</h3>";
-        my $query = "SELECT * FROM canciones";
-        my $sth = $dbh->prepare($query);
-        $sth->execute();
-
-        print "<table border='1'>";
-        print "<tr><th>ID</th><th>Nombre Canción</th><th>URL</th><th>Formato</th><th>Directorio</th><th>Fecha Descarga</th></tr>";
-        
-        while (my $row = $sth->fetchrow_hashref) {
-            print "<tr>";
-            print "<td>" . $row->{id} . "</td>";
-            print "<td>" . $row->{nombre_cancion} . "</td>";
-            print "<td>" . $row->{url} . "</td>";
-            print "<td>" . $row->{formato} . "</td>";
-            print "<td>" . $row->{directorio} . "</td>";
-            print "<td>" . $row->{fecha_descarga} . "</td>";
-            print "</tr>";
-        }
-
-        print "</table>";
-
-        # Mostrar lista de archivos en el directorio
-        print "<h2>Archivos disponibles en el directorio:</h2>";
-        opendir(my $dh, $path) or die "No se pudo abrir el directorio '$path': $!";
-        my @files = readdir($dh);
-        closedir($dh);
-
-        print "<ul>";
-        foreach my $file (@files) {
-            next if $file =~ /^\./; # Ignorar archivos ocultos
-            print "<li>" . encode('UTF-8', $file) . "</li>";
-        }
-        print "</ul>";
-
-        # Enlace al directorio accesible
-        my $enlace_directorio = $nuevo_directorio ? $nuevo_directorio : $directorio;
-        print "<h3>Para ver sus descargas, haga click: <a href='/descargas/$enlace_directorio'>Ver archivos</a></h3>";
     } else {
         print "<p>Error: Proporcione una URL válida.</p>";
     }
 }
-    # Finalizar HTML
-    print $cgi->end_html;
+# Finalizar HTML
+print $cgi->end_html;

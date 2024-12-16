@@ -27,11 +27,8 @@ CREATE TABLE IF NOT EXISTS usuarios (
 CREATE TABLE IF NOT EXISTS canciones (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre_cancion VARCHAR(255) NOT NULL,
-    artista VARCHAR(255) NOT NULL, 
     url VARCHAR(255) NOT NULL,
     formato VARCHAR(10) NOT NULL,
     fecha_descarga TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    tamano INT,
-    genero VARCHAR(255),
     directorio VARCHAR(255) NOT NULL
 );

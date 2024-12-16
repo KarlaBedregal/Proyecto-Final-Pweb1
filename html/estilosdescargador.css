@@ -1,18 +1,21 @@
-/* General Body Styles */
+/* Estilos generales */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #fbe9e7; /* Rosa muy suave */
+    background: linear-gradient(to right, #00cfff, #00d4a9); /* Celeste vibrante (#00cfff) a verde agua intenso (#00d4a9) */
     color: #333;
-    margin: 0;
+    margin-top: -5px;
     padding: 0;
     text-align: center;
+    padding-left: 300px;
 }
 
-/* Título principal */
-h2 {
-    color: #d32f2f; /* Rojo brillante */
-    font-size: 36px;
-    margin-bottom: 20px;
+/* Contenedor para el formulario y el juego */
+.contenedor {
+    display: flex;
+    justify-content: space-between; /* Separar el formulario y el juego */
+    padding: 20px;
+    margin-left: 500px;
+    margin-top: -50px;
 }
 
 /* Estilo para el formulario */
@@ -22,13 +25,57 @@ form {
     padding: 30px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     max-width: 500px;
-    margin: 0 auto;
+    margin: 0;
+    flex: 1; 
+}
+
+/* Estilo para el área del juego */
+.juego {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin: 0;
+    flex: 1; /* Esto hace que el juego ocupe el 50% del espacio disponible */
+    text-align: center;
+}
+
+h1 {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 80px;
+    color: #ffffff; /* Color base */
+    text-transform: uppercase;
+    letter-spacing: 5px; /* Espaciado entre letras */
+    text-shadow: 0 0 15px rgba(255, 0, 0, 0.8), 0 0 30px rgba(255, 255, 255, 0.8), 0 0 50px rgba(255, 255, 255, 0.8); /* Sombra luminosa */
+    background: linear-gradient(45deg, #ff007f, #ff8c00, #ffec00, #8c00ff); /* Degradado de colores brillantes */
+    -webkit-background-clip: text; 
+    color: transparent;
+    background-size: 400% 400%;
+    animation: gradientAnimation 6s ease infinite; /* Animación del degradado */
+    margin-bottom: 20px;
+    margin-right: 400px;
+}
+
+/* Animación para el degradado */
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+
+/* Estilos para el título principal */
+h2 {
+    color: #d32f2f;
+    font-size: 36px;
+    margin-bottom: 20px;
 }
 
 /* Estilo para los labels */
 label {
     font-size: 18px;
-    color: #d32f2f; /* Rojo para los labels */
+    color: #d32f2f;
     margin-top: 15px;
     display: block;
 }
@@ -39,19 +86,19 @@ input[type="text"], select {
     padding: 15px;
     margin-top: 10px;
     font-size: 16px;
-    border: 2px solid #f48fb1; /* Rosa claro */
+    border: 2px solid #f48fb1;
     border-radius: 5px;
     box-sizing: border-box;
 }
 
 input[type="text"]:focus, select:focus {
-    border-color: #d32f2f; /* Rojo brillante al enfocarse */
+    border-color: #d32f2f;
     outline: none;
 }
 
 /* Botones */
 button {
-    background-color: #e91e63; /* Rosa fuerte */
+    background-color: #1e32e9;
     color: white;
     padding: 14px 20px;
     border: none;
@@ -60,11 +107,11 @@ button {
     cursor: pointer;
     transition: background-color 0.3s ease;
     width: 100%;
-    margin-top: 20px;
+    margin-top: 5px;
 }
 
 button:hover {
-    background-color: #c2185b; /* Rosa más oscuro */
+    background-color: #c2185b;
 }
 
 /* Enlace de configuración */
@@ -73,7 +120,7 @@ a.button-link {
     display: inline-block;
     margin-top: 20px;
     font-size: 18px;
-    color: #e91e63; /* Rosa fuerte */
+    color: #e91e63;
     border: 2px solid #e91e63;
     padding: 10px 20px;
     border-radius: 5px;
@@ -95,4 +142,65 @@ img {
 /* Añadir un poco de espacio alrededor del formulario */
 form, .button-link, input, button {
     margin-bottom: 20px;
+}
+
+.game-container {
+    margin-top: -2000px; /* Ajusta este valor según necesites */
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+#myCanvas {
+    margin-top: 0;
+}
+
+#mis_descargas {
+    display: inline-block;
+    margin-top: -300px;
+    margin-left: 1200px;
+    background-color: #cf2721; /* Color verde llamativo */
+    color: white; /* Texto blanco */
+    text-decoration: none; /* Sin subrayado */
+    padding: 10px 20px; /* Espaciado interno */
+    font-size: 30px; /* Tamaño de fuente */
+    font-weight: bold; /* Texto en negrita */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Sombra para el botón */
+    transition: all 0.3s ease; /* Transición para hover */
+    animation: brilloYTemblor 1.5s infinite alternate; /* Animación combinada */
+}
+
+#mis_descargas:hover {
+    background-color: #0b0474; /* Cambio a un verde más oscuro en hover */
+    box-shadow: 0 10px 12px rgba(0, 0, 0, 0.4); /* Más sombra al pasar el mouse */
+    transform: scale(1.08); /* Ligero agrandamiento */
+}
+
+#mis_descargas:active {
+    background-color: #3e8e41; /* Verde más oscuro para clic */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Reducir sombra al presionar */
+    transform: scale(0.98); /* Leve reducción para efecto de clic */
+}
+
+/* Animación de brillo y temblor */
+@keyframes brilloYTemblor {
+    0% {
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2), 0 0 5px rgba(255, 255, 255, 0.3);
+        transform: translate(0px, 0px) scale(1);
+    }
+    25% {
+        transform: translate(-1px, 1px) scale(1.01);
+    }
+    50% {
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2), 0 0 15px rgba(255, 255, 255, 0.6);
+        transform: translate(1px, -1px) scale(1);
+    }
+    75% {
+        transform: translate(-1px, -1px) scale(1.01);
+    }
+    100% {
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2), 0 0 10px rgba(255, 255, 255, 0.4);
+        transform: translate(1px, 1px) scale(1);
+    }
 }

@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -y \
     libdbi-perl \
     libdbd-mysql-perl \
     libdigest-sha-perl \
+    libjson-perl \
     build-essential && apt-get clean
 
 # Configurar el entorno

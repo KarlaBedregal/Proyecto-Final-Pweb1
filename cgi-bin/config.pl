@@ -9,7 +9,7 @@ use utf8;
 my $cgi = CGI->new;
 
 print $cgi->header('text/html; charset=UTF-8');
-print $cgi->start_html('Configuración');
+print $cgi->start_html('Configuración de mis descargas');
 
 # Parámetros del formulario
 my $formato_inicial = $cgi->param('selectmenuinicial') || 'mp4';
@@ -125,13 +125,17 @@ if ($accion && $accion eq 'convertir') {
             print "<p>Error de ffmpeg:</p><pre>@error_log</pre>";
         } else {
             print "<p>El video ha sido convertido con éxito. Puedes descargarlo <a href='/descargas/$video_descargado.convertido.$formato_final'>aquí</a>.</p>";
+            print '<video width="640" height="360" controls>
+            <source src="/descargas/' . $video_descargado . '.convertido.' . $formato_final . '" type="video/mp4">
+            Your browser does not support the video tag.
+            </video><br><br>';
         }
     } else {
         print "<p>No se seleccionó un video para convertir.</p>";
     }
 } else {
     # Mostrar el formulario de configuración cuando no se ha hecho la conversión
-    print "<h1>Configuración</h1>";
+    print "<h1>LOADING...</h1>";
 }
 
 # Ruta del directorio de descargas
@@ -144,7 +148,7 @@ closedir($dh);
 # Comenzamos el formulario
 print <<HTML;
 <head>
-    <link rel="stylesheet" href="/estilos.css">
+    <link rel="stylesheet" href="../html/config.css">
 </head>
 <h1>Configuración</h1>
 <form action="/cgi-bin/config.pl" method="GET">
