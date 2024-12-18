@@ -154,7 +154,7 @@ form {
     padding: 20px;
     border-radius: 20px;
     margin: 0; /* Alinear el formulario al borde izquierdo */
-    background-color: rgba(255, 255, 255, 0); /* Fondo semitransparente */
+    background-color: rgba(179, 226, 185, 0.767); /* Fondo semitransparente */
     border: 1px solid #1c1c1c00;
 }
 
@@ -191,16 +191,18 @@ input[type="email"]:focus,
 input[type="date"]:focus, 
 input[type="number"]:focus, 
 select:focus {
-    border-color: #33b819; /* Cambia el borde al hacer foco */
+    border-color: #5760ad; /* Cambia el borde al hacer foco */
     outline: none; /* Elimina el contorno predeterminado */
 }
 
 input[type="submit"] {
-    background-color: #6dd436;
+    font-size: 20px;
+    background-color: #3886c5;
+    margin-top: -25px;
     color: white;
     padding: 12px 18px; /* Aumenté el padding para hacerlo más grande */
     border: none;
-    border-radius: 8px; /* Bordes más redondeados */
+    border-radius: 12px; /* Bordes más redondeados */
     cursor: pointer;
     width: 100%;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Agregué sombra */

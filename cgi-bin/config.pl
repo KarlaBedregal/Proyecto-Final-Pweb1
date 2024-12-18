@@ -7,19 +7,20 @@ use Encode;
 use utf8;
 
 my $cgi = CGI->new;
+binmode(STDOUT, ":utf8");
 
 print $cgi->header('text/html; charset=UTF-8');
 print $cgi->start_html('Configuración de mis descargas');
 
-# Parámetros del formulario
-my $formato_inicial = $cgi->param('selectmenuinicial') || 'mp4';
-my $formato_final = $cgi->param('selectmenufinal') || 'mp4';
-my $resolucion = $cgi->param('selectedresolucion');
-my $proporcion_imagen = $cgi->param('selectedproporcionimagen');
-my $audio_inicial = $cgi->param('selectedaudioinicial');
-my $frecuencia = $cgi->param('selectedfrecuencia');
-my $canales = $cgi->param('selectedcanales');
-my $accion = $cgi->param('accion');
+my $formato_inicial = decode('utf-8', $cgi->param('selectmenuinicial') || 'mp4');
+my $formato_final = decode('utf-8', $cgi->param('selectmenufinal') || 'mp4');
+my $resolucion = decode('utf-8', $cgi->param('selectedresolucion'));
+my $proporcion_imagen = decode('utf-8', $cgi->param('selectedproporcionimagen'));
+my $audio_inicial = decode('utf-8', $cgi->param('selectedaudioinicial'));
+my $frecuencia = decode('utf-8', $cgi->param('selectedfrecuencia'));
+my $canales = decode('utf-8', $cgi->param('selectedcanales'));
+my $accion = decode('utf-8', $cgi->param('accion'));
+
 
 if ($frecuencia eq '44.1') {
     $frecuencia = 44100;
@@ -134,8 +135,7 @@ if ($accion && $accion eq 'convertir') {
         print "<p>No se seleccionó un video para convertir.</p>";
     }
 } else {
-    # Mostrar el formulario de configuración cuando no se ha hecho la conversión
-    print "<h1>LOADING...</h1>";
+    print "<h1>Configuración</h1>";
 }
 
 # Ruta del directorio de descargas
@@ -148,9 +148,9 @@ closedir($dh);
 # Comenzamos el formulario
 print <<HTML;
 <head>
-    <link rel="stylesheet" href="../html/config.css">
+    <link rel="stylesheet" href="../config.css">
 </head>
-<h1>Configuración</h1>
+<h2>Elije el formato de tu video descargado y selecciona a quieres convertirlo y que propiedades de salida deseas</h2><br><br>
 <form action="/cgi-bin/config.pl" method="GET">
   <strong>Convertir &nbsp;De&nbsp;&nbsp;</strong>
   <select id="menuconfinicial" name="selectmenuinicial">
@@ -198,6 +198,14 @@ print <<HTML;
   </select><br><br>
 
   <strong>Propiedades del video de salida</strong><br>
+    <a href="../descargador.html" id="principal">
+        <button type="button">Ir a la página principal</button>
+    </a>
+
+        <img src="../images/perrito2.png" alt="perrito2" class="perrito2">
+        <a href="/cgi-bin/cerrar_sesion.pl" id="cerrar_sesion">Cerrar Sesion</a>
+
+
 
   <p>Resolución 
     <select id="resolucion" name="selectedresolucion">
@@ -252,6 +260,121 @@ print <<HTML;
 
   <button type="submit" name="accion" value="convertir">Convertir</button>
 </form>
+
+<hr>
+
+<!-- Juego Piedra, Papel o Tijera -->
+<h2>Piedra, Papel o Tijera</h2>
+<canvas id="gameCanvas" width="300" height="150"></canvas>
+<p id="message"></p>
+
+<button onclick="play('piedra')">Piedra</button>
+<button onclick="play('papel')">Papel</button>
+<button onclick="play('tijera')">Tijera</button>
+
+<div class="legend">
+    <div>
+        <canvas id="piedraLegend" width="100" height="100"></canvas>
+        <p>Piedra</p>
+    </div>
+    <div>
+        <canvas id="papelLegend" width="100" height="100"></canvas>
+        <p>Papel</p>
+    </div>
+    <div>
+        <canvas id="tijeraLegend" width="100" height="100"></canvas>
+        <p>Tijera</p>
+    </div>
+</div>
+
+<script>
+    var canvas = document.getElementById('gameCanvas');
+    var ctx = canvas.getContext('2d');
+
+    function drawPiedra(x, y) {
+        ctx.fillStyle = 'gray';
+        ctx.beginPath();
+        ctx.arc(x + 50, y + 50, 40, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    function drawPapel(x, y) {
+        ctx.fillStyle = 'lightblue';
+        ctx.fillRect(x, y, 100, 70);
+        ctx.fillStyle = 'black';
+        ctx.fillText('Papel', x + 30, y + 40);
+    }
+
+    function drawTijera(x, y) {
+        ctx.fillStyle = 'silver';
+        ctx.beginPath();
+        ctx.arc(x + 40, y + 40, 30, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.moveTo(x + 20, y + 60);
+        ctx.lineTo(x + 60, y + 60);
+        ctx.lineWidth = 5;
+        ctx.stroke();
+    }
+
+    function play(playerChoice) {
+        const choices = ['piedra', 'papel', 'tijera'];
+        const computerChoice = choices[Math.floor(Math.random() * 3)];
+        let result = '';
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        if (playerChoice === 'piedra') drawPiedra(20, 40);
+        if (playerChoice === 'papel') drawPapel(20, 40);
+        if (playerChoice === 'tijera') drawTijera(20, 40);
+
+        if (computerChoice === 'piedra') drawPiedra(160, 40);
+        if (computerChoice === 'papel') drawPapel(160, 40);
+        if (computerChoice === 'tijera') drawTijera(160, 40);
+
+        if (playerChoice === computerChoice) {
+            result = "Empate!";
+        } else if (
+            (playerChoice === 'piedra' && computerChoice === 'tijera') ||
+            (playerChoice === 'papel' && computerChoice === 'piedra') ||
+            (playerChoice === 'tijera' && computerChoice === 'papel')
+        ) {
+            result = "¡Ganaste!";
+        } else {
+            result = "¡Perdiste!";
+        }
+
+        document.getElementById('message').innerHTML =
+            "Elegiste " + playerChoice + " y la computadora eligió " + computerChoice + ". " + result;
+    }
+
+    function drawLegend() {
+        var piedraLegend = document.getElementById('piedraLegend').getContext('2d');
+        var papelLegend = document.getElementById('papelLegend').getContext('2d');
+        var tijeraLegend = document.getElementById('tijeraLegend').getContext('2d');
+
+        piedraLegend.fillStyle = 'gray';
+        piedraLegend.beginPath();
+        piedraLegend.arc(50, 50, 40, 0, Math.PI * 2);
+        piedraLegend.fill();
+
+        papelLegend.fillStyle = 'lightblue';
+        papelLegend.fillRect(10, 30, 80, 50);
+        papelLegend.fillStyle = 'black';
+        papelLegend.fillText('Papel', 30, 55);
+
+        tijeraLegend.fillStyle = 'silver';
+        tijeraLegend.beginPath();
+        tijeraLegend.arc(40, 40, 30, 0, Math.PI * 2);
+        tijeraLegend.fill();
+        tijeraLegend.moveTo(20, 60);
+        tijeraLegend.lineTo(60, 60);
+        tijeraLegend.lineWidth = 5;
+        tijeraLegend.stroke();
+    }
+
+    drawLegend();
+</script>
+
 HTML
 
 print $cgi->end_html;

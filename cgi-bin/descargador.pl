@@ -124,6 +124,19 @@ print <<EOF;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Agregué sombra */
         transition: all 0.3s ease; /* Transición suave para hover */
     }
+
+    input[type="submitt"] {
+        background-color: #6dd436;
+        color: white;
+        margin: 20px 25px; 
+        padding: 12px 18px; /* Aumenté el padding para hacerlo más grande */
+        border: none;
+        border-radius: 8px; /* Bordes más redondeados */
+        cursor: pointer;
+        width: 100%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Agregué sombra */
+        transition: all 0.3s ease; /* Transición suave para hover */
+    }
 </style>
 
 </head>
@@ -221,9 +234,10 @@ if ($is_ajax) {
         }
         print "<form action='/cgi-bin/ver_canciones.pl' method='get'>";
         print "<input type='hidden' name='directorio' value='$directorio_guardado'>";
-        print "<input type='submit' value='Ver canciones descargadas'>";
+        print "<input type='submit' value='Ver Historial de canciones'>";
         print "</form>";
 
+        
     } else {
         print "<p>Error: Proporcione una URL válida.</p>";
     }

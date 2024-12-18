@@ -41,174 +41,131 @@ print <<EOF;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tabla de descargas</title>
+    <img src="../images/perrito2.png" alt="perrito2" class="perrito2">
+    <a href="../descargador.html" id="principal">Ir a la pagina principal</a>
+
     <style>
         body {
-        font-family: Arial, sans-serif;
-        background-color: #ffffff;
-        margin: 0 20px;
-        padding: 0;
-        display: flex;
-        align-items: center;
-        height: 100vh; 
-    }
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #00bfff, #7fffd4); /* Gradiente de celeste a verde agua */
+            margin: 0 20px;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-    * {
-        box-sizing: border-box; /* Ajusta el tamaño para todos los elementos */
-    }
+        * {
+            box-sizing: border-box;
+        }
 
-    h1 {
-        font-size: 3rem;
-        color: #4facfe;
-        margin-bottom: 50px; 
-        text-align: center; /* Alinea el título al centro */
-    }
+        h1 {
+            font-size: 3rem;
+            color: #1a589c;
+            margin-bottom: 50px;
+            text-align: center;
+        }
 
-    label {
-        color: #2e2708ab; /* Cambia el color del texto */
-        font-size: 16px; /* Tamaño de fuente opcional */
-        margin-bottom: 5px; /* Espaciado opcional */
-        display: block; /* Asegura que el label ocupe toda la línea */
-    }
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
 
-    form {
-        width: 100%;
-        max-width: 400px; /* Tamaño máximo del formulario */
-        padding: 20px;
-        border-radius: 20px;
-        margin: 0; /* Alinear el formulario al borde izquierdo */
-        background-color: rgba(255, 255, 255, 0); /* Fondo semitransparente */
-        border: 1px solid #1c1c1c00;
-    }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
 
-    .input-group {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 20px;
-    }
+        th {
+            background-color: #4facfe;
+            color: white;
+        }
 
-    .input-group div {
-        width: 48%;
-    }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
 
-    input[type="text"], 
-    input[type="password"], 
-    input[type="email"], 
-    input[type="date"], 
-    input[type="number"], 
-    input[type="tel"],
-    select {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 20px;
-        border: 1px solid #382a1c; /* Cambia el color del borde */
-        border-radius: 30px;
-        background-color: rgba(158, 103, 48, 0); /* Cambia el color de fondo si lo deseas */
-        color: #1b1b1b; /* Cambia el color del texto */
-    }
+        button {
+            padding: 8px 16px;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-    /* Estilo cuando el campo está en foco (al hacer clic) */
-    input[type="text"]:focus, 
-    input[type="password"]:focus, 
-    input[type="email"]:focus, 
-    input[type="date"]:focus, 
-    input[type="number"]:focus, 
-    select:focus {
-        border-color: #33b819; /* Cambia el borde al hacer foco */
-        outline: none; /* Elimina el contorno predeterminado */
-    }
+        .btn-editar {
+            background-color: #4facfe; /* Azul para Editar */
+        }
 
-    input[type="submit"] {
-        background-color: #6dd436;
-        color: white;
-        padding: 12px 18px; /* Aumenté el padding para hacerlo más grande */
-        border: none;
-        border-radius: 8px; /* Bordes más redondeados */
-        cursor: pointer;
-        width: 100%;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Agregué sombra */
-        transition: all 0.3s ease; /* Transición suave para hover */
-    }
+        .btn-eliminar {
+            background-color: #ff6347; /* Rojo para Eliminar */
+        }
 
-    /* Estilos para las tablas */
-    table {
-        width: 100%;
-        border-collapse: collapse; /* Hace que las celdas estén unidas */
-        margin-top: 20px;
-    }
+        .btn-editar:hover, .btn-eliminar:hover {
+            opacity: 0.8;
+        }
 
-    th, td {
-        padding: 10px;
-        text-align: center; /* Centra el contenido de las celdas */
-        border: 1px solid #ddd;
-    }
+        .contenedor-flex {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 20px;
+        }
 
-    th {
-        background-color: #4facfe;
-        color: white;
-    }
+        .perrito2 {
+        width: 200px;
+        height: auto;
+        position: fixed; /* Fija la imagen en la pantalla */
+        bottom: 20px; /* Distancia de 20px desde el borde inferior */
+        right: 20px; /* Distancia de 20px desde el borde izquierdo */
+        z-index: 1000; /* Asegura que la imagen esté sobre otros elementos */
+        }
 
-    tr:nth-child(even) {
-        background-color: #f2f2f2; /* Agrega un color de fondo alternativo para filas pares */
-    }
+        #principal {
+        position: fixed;      /* Fija el elemento en la pantalla */
+        top: 20px;            /* A 20px desde la parte superior */
+        right: 20px;          /* A 20px desde la parte derecha */
+        background-color: #FF6347; /* Color de fondo (tomate) */
+        color: white;         /* Color del texto */
+        padding: 10px 20px;   /* Espaciado dentro del enlace */
+        border-radius: 10px;  /* Bordes redondeados */
+        font-weight: bold;    /* Negrita */
+        text-decoration: none; /* Quitar subrayado */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para destacarlo */
+        transition: all 0.3s ease; /* Transición suave */
+        }
 
-    /* Estilos para el modal de edición */
-    #modalEdit {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-    }
+        #principal:hover {
+            background-color: #FF4500; /* Cambiar color de fondo al pasar el mouse */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Cambiar la sombra al pasar el mouse */
+        }
 
-    #modalEdit div {
-        background-color: #fff;
-        padding: 20px;
-        width: 300px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    button {
-        margin: 5px;
-    }
-
-    /* Estilos de los botones al final */
-    button {
-        padding: 10px 20px;
-        background-color: #6dd436;
-        border: none;
-        border-radius: 8px;
-        color: white;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-        background-color: #4caf50; /* Cambio de color al pasar el mouse */
-    }
+        }
 
     </style>
-    </head>
+</head>
 
 <body>
 <div class="contenedor-flex">
+    <div>
+        <h1>Tabla de Canciones</h1>
+        <div>
+            <h2>Lista de Directorios</h2>
 EOF
 
 while (my $dir_row = $sth_directorio->fetchrow_hashref) {
     my $directorio = $dir_row->{directorio};
-    print "<h2>Lista: $directorio</h2>";
+    print "<h3>Lista: $directorio</h3>";
 
     # Consultar las canciones de ese directorio
     my $query_canciones = "SELECT * FROM canciones WHERE directorio = ?";
     my $sth_canciones = $dbh->prepare($query_canciones);
     $sth_canciones->execute($directorio);
 
-    print "<table border='1'>";
+    print "<table>";
     print "<tr><th>ID</th><th>Nombre Canción</th><th>URL</th><th>Directorio</th><th>Fecha Descarga</th><th>Acciones</th></tr>";
 
     while (my $row = $sth_canciones->fetchrow_hashref) {
@@ -219,17 +176,17 @@ while (my $dir_row = $sth_directorio->fetchrow_hashref) {
         print "<td>" . $row->{formato} . "</td>";
         print "<td>" . $row->{fecha_descarga} . "</td>";
 
-        # Enlaces para editar y eliminar con AJAX
+        # Botones para editar y eliminar
         print "<td>";
-        print "<button href='#' onclick='editarCancion(" . $row->{id} . ", \"" . $row->{nombre_cancion} . "\")'>Editar</button> | ";
-        print "<button href='#' onclick='eliminarCancion(" . $row->{id} . ")'>Eliminar</button> |";
+        print "<button class='btn-editar' onclick='editarCancion(" . $row->{id} . ", \"" . $row->{nombre_cancion} . "\")'>Editar</button> | ";
+        print "<button class='btn-eliminar' onclick='eliminarCancion(" . $row->{id} . ")'>Eliminar</button>";
         print "</td>";
+        print "</tr>";
     }
-
     print "</table>";
 }
 
-# Agregar el modal de edición
+# Modal para editar
 print <<'HTML';
 <!-- Modal para editar -->
 <div id="modalEdit" style="display:none;">
@@ -246,25 +203,14 @@ print <<'HTML';
     </div>
 </div>
 
-
-<!-- Botones adicionales -->
-<div>
-    <button onclick="history.back()">Volver</button> <br><br>
-    <form action="config.pl" method="get">
-        <button type="submit">Cambiar las propiedades de mis descargas</button>
-    </form>
-</div>
-
 <script>
     function editarCancion(id, nombre) {
-        // Mostrar el modal y establecer el valor del campo
         document.getElementById('editId').value = id;
         document.getElementById('editNombre').value = nombre;
         document.getElementById('modalEdit').style.display = 'block';
     }
 
     function cerrarModal() {
-        // Ocultar el modal
         document.getElementById('modalEdit').style.display = 'none';
     }
 
@@ -272,15 +218,14 @@ print <<'HTML';
         var id = document.getElementById('editId').value;
         var nombre = document.getElementById('editNombre').value;
 
-        // Realizar la solicitud AJAX para editar la canción
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'update_song.pl', true);  // Apuntar a un script Perl de actualización
+        xhr.open('POST', 'update_song.pl', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 alert('Canción actualizada');
                 cerrarModal();
-                location.reload();  // Recargar la página para reflejar el cambio
+                location.reload();
             }
         };
         xhr.send('action=editar&id_cancion=' + id + '&nombre_cancion=' + encodeURIComponent(nombre));
@@ -289,21 +234,23 @@ print <<'HTML';
     function eliminarCancion(id) {
         if (confirm('¿Estás seguro de que quieres eliminar esta canción?')) {
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'delete_song.pl', true);  // Apuntar a un script Perl de eliminación
+            xhr.open('POST', 'delete_song.pl', true);
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     alert('Canción eliminada');
-                    location.reload();  // Recargar la página para reflejar la eliminación
+                    location.reload();
                 }
             };
             xhr.send('action=eliminar&id_cancion=' + id);
         }
     }
-    
 </script>
+
+</div>
+</div>
+</body>
+</html>
 HTML
 
 print $cgi->end_html;
-
-

@@ -40,6 +40,8 @@ COPY ./html/estilosdescargador.css /var/www/html/
 COPY ./html/config.css /var/www/html/
 COPY ./images/iconodownloaderbyte.png /var/www/html/images/
 COPY ./images/imagen.jpg /var/www/html/images/
+COPY ./images/perrito1.png /var/www/html/images/
+COPY ./images/perrito2.png /var/www/html/images/
 COPY ./init.sql /tmp/init.sql
 
 # Establecer permisos adecuados para los scripts CGI
