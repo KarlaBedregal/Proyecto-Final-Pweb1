@@ -150,14 +150,15 @@ print <<HTML;
 <head>
     <link rel="stylesheet" href="../config.css">
 </head>
-<h2>Elije el formato de tu video descargado y selecciona a quieres convertirlo y que propiedades de salida deseas</h2><br><br>
-<form action="/cgi-bin/config.pl" method="GET">
-  <strong>Convertir &nbsp;De&nbsp;&nbsp;</strong>
-  <select id="menuconfinicial" name="selectmenuinicial">
-    <option value="mp4" @{[ $formato_inicial eq 'mp4' ? 'selected' : '' ]}>MP4</option>
-    <option value="mp3" @{[ $formato_inicial eq 'mp3' ? 'selected' : '' ]}>MP3</option>
-    <option value="avi" @{[ $formato_inicial eq 'avi' ? 'selected' : '' ]}>AVI</option>
-  </select>
+<div class="contenedor">
+        <h3>Elije el formato de tu video descargado y selecciona a quieres convertirlo y que propiedades de salida deseas</h3><br><br>
+    <form action="/cgi-bin/config.pl" method="GET">
+    <strong>Convertir &nbsp;De&nbsp;&nbsp;</strong>
+    <select id="menuconfinicial" name="selectmenuinicial">
+        <option value="mp4" @{[ $formato_inicial eq 'mp4' ? 'selected' : '' ]}>MP4</option>
+        <option value="mp3" @{[ $formato_inicial eq 'mp3' ? 'selected' : '' ]}>MP3</option>
+        <option value="avi" @{[ $formato_inicial eq 'avi' ? 'selected' : '' ]}>AVI</option>
+    </select>
   
   <strong>&nbsp;a&nbsp;</Strong>
   
@@ -260,10 +261,11 @@ print <<HTML;
 
   <button type="submit" name="accion" value="convertir">Convertir</button>
 </form>
-
+</div>
 <hr>
 
 <!-- Juego Piedra, Papel o Tijera -->
+<div class="juego">
 <h2>Piedra, Papel o Tijera</h2>
 <canvas id="gameCanvas" width="300" height="150"></canvas>
 <p id="message"></p>
@@ -374,7 +376,7 @@ print <<HTML;
 
     drawLegend();
 </script>
-
+</div>
 HTML
 
 print $cgi->end_html;

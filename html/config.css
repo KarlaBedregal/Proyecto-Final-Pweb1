@@ -31,6 +31,7 @@ form {
     align-items: center;
     width: 80%;
     max-width: 600px;
+    text-align: center;
 }
 
 strong {
@@ -39,14 +40,14 @@ strong {
 }
 
 select, input[type="submit"] {
-    background: #e0f7fa;
+    background: #a4d9e0;
     border: 1px solid #00796b;
     border-radius: 5px;
     color: #004d40;
     font-size: 14px;
     margin: 5px 0;
     padding: 8px 10px;
-    width: calc(100% - 20px);
+    width: calc(100% - 40px);
     max-width: 300px;
     text-align: center;
 }
@@ -106,7 +107,7 @@ button:hover {
 }
 .perrito2 {
     position: fixed; /* Fija la imagen en la pantalla */
-    bottom: 20px; /* Ubica la imagen cerca del borde inferior */
+    bottom: 40px; /* Ubica la imagen cerca del borde inferior */
     right: 20px; /* Ubica la imagen a la derecha */
     width: 150px; /* Tamaño de la imagen */
     animation: moverVida 2s infinite; /* Animación continua que le da "vida" a la imagen */
@@ -162,13 +163,23 @@ button:hover {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Cambiar la sombra al pasar el mouse */
 }
 
-#juego {
+.juego {
     position: relative; /* Permite ajustar la posición con `left` o `top` */
-    width: 800px; /* Cambia al tamaño de tu juego */
-    height: 600px; /* Cambia al tamaño de tu juego */
-    background-color: #fff; /* Fondo del juego */
-    border: 2px solid #000; /* Borde para resaltar */
+    width: 400px; /* Cambia al tamaño de tu juego */
+    height: 700px; /* Cambia al tamaño de tu juego */
+    background-color: #eedd94; /* Fondo del juego */
+    border: 2px solid #dfdcc4; /* Borde para resaltar */
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25); /* Sombras para estética */
-    right: 50px; /* Desplaza el juego un poco hacia la derecha */
-    top: 200px;
+    right: 270px; /* Desplaza el juego un poco hacia la derecha */
+    top: -700px;
+    float: right;
+    text-align: center;
+}
+.formulario {
+    width: 48%;
+    padding: 10px;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    float: left;
+    text-align: center;
 }
